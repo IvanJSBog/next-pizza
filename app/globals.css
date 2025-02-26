@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @plugin "tailwindcss-animate";
 
 html {
@@ -22,8 +24,8 @@ html {
     --popover: 0 0% 100%;
     --popover-foreground: 20 14.3% 4.1%;
 
-    --primary: 20.5 90.2% 48.2%;
-    --primary-foreground: 60 9.1% 97.8%;
+    --primary: #ff6a00;
+    --primary-foreground: #FFFFFF;
 
     --secondary: 32 100% 98%;
     --secondary-foreground: 24 9.8% 10%;
@@ -70,7 +72,6 @@ html {
     --chart-5: 340 75% 55%;
   }
 }
-
 
 * {
   font-family: var(--font-nunito), sans-serif;
