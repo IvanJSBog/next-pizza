@@ -5,70 +5,52 @@ import { Title } from "@/shared/components/shared/title";
 import { Button } from "../ui";
 import { ProductImage } from "@/shared/components/shared/product-image";
 import { GroupVariants } from "@/shared/components/shared/group-variants";
-import {
-  mapPizzaType,
-  PizzaSize,
-  pizzaSizes,
-  PizzaType,
-  pizzaTypes,
-} from "@/shared/constants/pizza";
+import { PizzaSize, PizzaType, pizzaTypes } from "@/shared/constants/pizza";
 import { IngredientItem } from "@/shared/components/shared/ingredient-item";
-import { useSet } from "react-use";
-import { calcTotalPizzaPrice } from "@/shared/lib/calc-total-pizza-price";
+import { usePizzaOptions } from "@/shared/hooks/use-pizza-options";
+import { getPizzaDetails } from "@/shared/lib/get-pizza-details";
 
 interface Props {
   imageUrl: string;
   name: string;
   ingredients: Ingredient[];
   items: ProductItem[];
-  onClickAddCart?: VoidFunction;
+  onSubmit: (itemId: number, ingredients: number[]) => void;
   className?: string;
+  loading: boolean;
 }
 export const ChoosePizzaForm: React.FC<Props> = ({
   className,
   name,
   ingredients,
   items,
-  onClickAddCart,
+  onSubmit,
   imageUrl,
+  loading,
 }) => {
-  const [size, setSize] = React.useState<PizzaSize>(20);
-  const [type, setType] = React.useState<PizzaType>(2);
-  const [selectedIngredients, { toggle: addIngredient }] = useSet(
-    new Set<number>([]),
-  );
-
-  const totalPrice = calcTotalPizzaPrice(
+  const {
     size,
     type,
-    ingredients,
+    selectedIngredients,
+    setSize,
+    setType,
+    addIngredient,
+    availableSizes,
+    currentItemId,
+  } = usePizzaOptions(items);
+
+  const { totalPrice, textDetails } = getPizzaDetails(
+    size,
+    type,
     items,
+    ingredients,
     selectedIngredients,
   );
-  const textDetails = `${size} см. ${mapPizzaType[type]} тесто [${selectedIngredients.size}] доп. ингредиенты`;
-
-  const filteredPizzasBySize = items.filter((item) => item.pizzaType === type);
-  const availablePizzaSizes = pizzaSizes.map((item) => ({
-    name: item.name,
-    value: item.value,
-    disabled: !filteredPizzasBySize.some(
-      (pizza) => Number(pizza.size) === Number(item.value),
-    ),
-  }));
-
-  React.useEffect(() => {
-    const isAvailableSize = availablePizzaSizes?.find(
-      (item) => Number(item.value) === size && !item.disabled,
-    );
-    const availableSize = availablePizzaSizes?.find((item) => !item.disabled);
-    if (!isAvailableSize && availableSize) {
-      setSize(Number(availableSize.value) as PizzaSize);
-    }
-  }, [type]);
 
   const handleClickAdd = () => {
-    onClickAddCart?.();
-    console.log({ size, type, ingredients: selectedIngredients });
+    if (currentItemId) {
+      onSubmit(currentItemId, Array.from(selectedIngredients));
+    }
   };
 
   return (
@@ -81,7 +63,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
         <p className="text-gray-400">{textDetails}</p>
         <div className="flex flex-col gap-4 my-5">
           <GroupVariants
-            items={availablePizzaSizes}
+            items={availableSizes}
             value={String(size)}
             onClick={(value) => setSize(Number(value) as PizzaSize)}
           />
@@ -108,6 +90,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
         </div>
 
         <Button
+          loading={loading}
           className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
           onClick={handleClickAdd}
         >

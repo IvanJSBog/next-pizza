@@ -16,6 +16,9 @@ export const useQueryFilters = (filters: Filters) => {
       },
       { arrayFormat: "comma" },
     );
-    router.push(`?${query}`, { scroll: false });
-  }, [filters, router]);
+
+    if (query !== window.location.search.slice(1)) {
+      router.push(`?${query}`, { scroll: false });
+    }
+  }, [filters]);
 };
