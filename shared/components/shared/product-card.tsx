@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Title } from "@/shared/components/shared/title";
 import { Button } from "../ui";
 import { Plus } from "lucide-react";
+import { Ingredient } from "@prisma/client";
 
 interface Props {
   id: number;

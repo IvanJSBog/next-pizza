@@ -63,17 +63,27 @@ export const useFilters = (): ReturnProps => {
       [name]: value,
     }));
   };
-  return React.useMemo(
-    () => ({
-      sizes,
-      pizzaTypes,
-      selectedIngredients,
-      prices,
-      setPrices: updatePrice,
-      setPizzaTypes: togglePizzaTypes,
-      setSizes: toggleSizes,
-      setSelectedIngredients: toggleIngredients,
-    }),
-    [sizes, pizzaTypes, selectedIngredients, prices],
-  );
+  // return React.useMemo(
+  //   () => ({
+  //     sizes,
+  //     pizzaTypes,
+  //     selectedIngredients,
+  //     prices,
+  //     setPrices: updatePrice,
+  //     setPizzaTypes: togglePizzaTypes,
+  //     setSizes: toggleSizes,
+  //     setSelectedIngredients: toggleIngredients,
+  //   }),
+  //   [sizes, pizzaTypes, selectedIngredients, prices],
+  // );
+  return {
+    sizes,
+    pizzaTypes,
+    selectedIngredients,
+    prices,
+    setPrices: updatePrice,
+    setPizzaTypes: togglePizzaTypes,
+    setSizes: toggleSizes,
+    setSelectedIngredients: toggleIngredients,
+  };
 };
