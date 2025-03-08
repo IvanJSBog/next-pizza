@@ -1,60 +1,49 @@
-import { CartItem, WhiteBlock } from "@/shared/components/shared";
-import { getCartItemsDetails } from "@/shared/lib/get-cart-items-details";
-import { PizzaSize, PizzaType } from "@/shared/constants/pizza";
-
-import React from "react";
-import { CartStateItem } from "@/shared/lib/get-cart-details";
-import { CheckoutItemSkeleton } from "@/shared/components/shared/checkout-skeleton";
+import React from 'react';
+import { WhiteBlock } from '../white-block';
+import { CheckoutItem } from '../checkout-item';
+import { getCartItemDetails } from '@/shared/lib';
+import { PizzaSize, PizzaType } from '@/shared/constants/pizza';
+import { CartStateItem } from '@/shared/lib/get-cart-details';
+import { CheckoutItemSkeleton } from '../checkout-item-skeleton';
 
 interface Props {
   items: CartStateItem[];
-  onClickCountButton: (
-    id: number,
-    quantity: number,
-    type: "plus" | "minus",
-  ) => void;
+  onClickCountButton: (id: number, quantity: number, type: 'plus' | 'minus') => void;
   removeCartItem: (id: number) => void;
   loading?: boolean;
   className?: string;
 }
 
 export const CheckoutCart: React.FC<Props> = ({
+  items,
   onClickCountButton,
   removeCartItem,
-  className,
   loading,
-  items,
+  className,
 }) => {
   return (
     <WhiteBlock title="1. Корзина" className={className}>
       <div className="flex flex-col gap-5">
-        {loading &&
-          [...Array(5)].map((_, i) => <CheckoutItemSkeleton key={i} />)}
-        {!loading &&
-          items.map((item) => (
-            <CartItem
-              onClickCountButton={(type) =>
-                onClickCountButton(item.id, item.quantity, type)
-              }
-              key={item.id}
-              imageUrl={item.imageUrl}
-              name={item.name}
-              price={item.price}
-              id={item.id}
-              details={
-                item.pizzaSize && item.pizzaType
-                  ? getCartItemsDetails(
-                      item.pizzaType as PizzaType,
-                      item.pizzaSize as PizzaSize,
-                      item.ingredients,
-                    )
-                  : ""
-              }
-              disabled={item.disabled}
-              quantity={item.quantity}
-              onClickRemove={() => removeCartItem(item.id)}
-            />
-          ))}
+        {loading
+          ? [...Array(4)].map((_, index) => <CheckoutItemSkeleton key={index} />)
+          : items.map((item) => (
+              <CheckoutItem
+                key={item.id}
+                id={item.id}
+                imageUrl={item.imageUrl}
+                details={getCartItemDetails(
+                  item.ingredients,
+                  item.pizzaType as PizzaType,
+                  item.pizzaSize as PizzaSize,
+                )}
+                name={item.name}
+                price={item.price}
+                quantity={item.quantity}
+                disabled={item.disabled}
+                onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
+                onClickRemove={() => removeCartItem(item.id)}
+              />
+            ))}
       </div>
     </WhiteBlock>
   );

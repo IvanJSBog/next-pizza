@@ -1,11 +1,12 @@
-import { Nunito } from "next/font/google";
-import { Toaster } from "react-hot-toast";
-import "./globals.css";
+import { Nunito } from 'next/font/google';
+
+import './globals.css';
+import { Providers } from '@/shared/components/shared/providers';
 
 const nunito = Nunito({
-  subsets: ["cyrillic"],
-  variable: "--font-nunito",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  subsets: ['cyrillic'],
+  variable: '--font-nunito',
+  weight: ['400', '500', '600', '700', '800', '900'],
 });
 
 export default function RootLayout({
@@ -16,12 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/assets/logo.png" data-rh="true" />
+        <link data-rh="true" rel="icon" href="/logo.png" />
       </head>
-
-      <body className={nunito.variable}>
-        {children}
-        <Toaster />
+      <body className={nunito.className}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

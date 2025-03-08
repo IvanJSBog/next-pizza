@@ -1,9 +1,9 @@
-import React from "react";
-import Link from "next/link";
-import { Title } from "@/shared/components/shared/title";
-import { Button } from "../ui";
-import { Plus } from "lucide-react";
-import { Ingredient } from "@prisma/client";
+import Link from 'next/link';
+import React from 'react';
+import { Title } from './title';
+import { Button } from '../ui';
+import { Plus } from 'lucide-react';
+import { Ingredient } from '@prisma/client';
 
 interface Props {
   id: number;
@@ -19,8 +19,8 @@ export const ProductCard: React.FC<Props> = ({
   name,
   price,
   imageUrl,
-  className,
   ingredients,
+  className,
 }) => {
   return (
     <div className={className}>
@@ -32,13 +32,14 @@ export const ProductCard: React.FC<Props> = ({
         <Title text={name} size="sm" className="mb-1 mt-3 font-bold" />
 
         <p className="text-sm text-gray-400">
-          {ingredients.map((ingredient) => ingredient.name).join(", ")}
+          {ingredients.map((ingredient) => ingredient.name).join(', ')}
         </p>
 
         <div className="flex justify-between items-center mt-4">
           <span className="text-[20px]">
-            от <b>{price} P</b>
+            от <b>{price} ₽</b>
           </span>
+
           <Button variant="secondary" className="text-base font-bold">
             <Plus size={20} className="mr-1" />
             Добавить

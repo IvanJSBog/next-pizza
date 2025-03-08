@@ -1,13 +1,15 @@
-import { prisma } from "@/prisma/prisma-client";
-import { calcCartItemTotalPrice } from "@/shared/lib/calc-cart-item-total-price";
+import { prisma } from '@/prisma/prisma-client';
+import { calcCartItemTotalPrice } from './calc-cart-item-total-price';
 
 export const updateCartTotalAmount = async (token: string) => {
   const userCart = await prisma.cart.findFirst({
-    where: { OR: [{ token }] },
+    where: {
+      token,
+    },
     include: {
       items: {
         orderBy: {
-          createdAt: "desc",
+          createdAt: 'desc',
         },
         include: {
           productItem: {
@@ -22,10 +24,10 @@ export const updateCartTotalAmount = async (token: string) => {
   });
 
   if (!userCart) {
-    return 0;
+    return;
   }
 
-  const totalAmount = userCart?.items.reduce((acc, item) => {
+  const totalAmount = userCart.items.reduce((acc, item) => {
     return acc + calcCartItemTotalPrice(item);
   }, 0);
 
@@ -39,7 +41,7 @@ export const updateCartTotalAmount = async (token: string) => {
     include: {
       items: {
         orderBy: {
-          createdAt: "desc",
+          createdAt: 'desc',
         },
         include: {
           productItem: {
