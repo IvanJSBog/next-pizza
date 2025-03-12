@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Textarea } from "@/shared/components/ui";
 import { WhiteBlock } from "@/shared/components/shared";

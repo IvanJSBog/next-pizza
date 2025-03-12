@@ -8,7 +8,8 @@ import { cookies } from "next/headers";
 
 export async function createOrder(data) {
   try {
-    const cartToken = cookies().get("cartToken")?.value;
+    const nextCookies = await cookies();
+    const cartToken = nextCookies.get("cartToken")?.value;
 
     if (!cartToken) {
       throw new Error("Cart token not found");
@@ -81,5 +82,7 @@ export async function createOrder(data) {
       },
     });
     return paymentData.confirmation.confirmation_url;
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 }

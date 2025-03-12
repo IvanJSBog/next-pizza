@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Input } from "@/shared/components/ui";
 import { ErrorText } from "@/shared/components/shared/error-text";

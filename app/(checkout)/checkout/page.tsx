@@ -44,8 +44,6 @@ export default function CheckoutPage() {
         icon: "✅️",
       });
 
-      //TODO недоработан редирект убрать заглушку снизу
-      location.href = "http://localhost:3000/";
       if (url) {
         location.href = url;
       }
